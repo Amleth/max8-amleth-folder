@@ -1,0 +1,137 @@
+{
+	"pattrstorage" : 	{
+		"name" : "jeyjey",
+		"slots" : 		{
+			"1" : 			{
+				"id" : 1,
+				"data" : 				{
+					"amplitude" : [ 0.1 ],
+					"duration" : [ 10000 ],
+					"envelope" : [ 0.25 ],
+					"fwbwbal" : [ 0.0 ],
+					"glissando" : [ 1 ],
+					"maxpitch" : [ 60 ],
+					"minpitch" : [ 30 ],
+					"modpitch" : [ -26 ],
+					"trigspeed" : [ -4 ]
+				}
+
+			}
+,
+			"2" : 			{
+				"id" : 2,
+				"data" : 				{
+					"amplitude" : [ 0.424999999999999 ],
+					"duration" : [ 200 ],
+					"envelope" : [ 0.111111111111111 ],
+					"fwbwbal" : [ 0.65 ],
+					"glissando" : [ 0 ],
+					"maxpitch" : [ 70 ],
+					"minpitch" : [ 60 ],
+					"modpitch" : [ 25 ],
+					"trigspeed" : [ 8 ]
+				}
+
+			}
+,
+			"3" : 			{
+				"id" : 3,
+				"data" : 				{
+					"amplitude" : [ 0.849999999999999 ],
+					"duration" : [ 120 ],
+					"envelope" : [ 1.0 ],
+					"fwbwbal" : [ 1.0 ],
+					"glissando" : [ 0 ],
+					"maxpitch" : [ 45 ],
+					"minpitch" : [ 45 ],
+					"modpitch" : [ -12 ],
+					"trigspeed" : [ 30 ]
+				}
+
+			}
+,
+			"4" : 			{
+				"id" : 4,
+				"data" : 				{
+					"amplitude" : [ 0.324999999999999 ],
+					"duration" : [ 30 ],
+					"envelope" : [ 0.1 ],
+					"fwbwbal" : [ 0.0 ],
+					"glissando" : [ 0 ],
+					"maxpitch" : [ 80 ],
+					"minpitch" : [ 60 ],
+					"modpitch" : [ -13 ],
+					"trigspeed" : [ 72 ]
+				}
+
+			}
+,
+			"5" : 			{
+				"id" : 5,
+				"data" : 				{
+					"amplitude" : [ 0.95 ],
+					"duration" : [ 5 ],
+					"envelope" : [ 1.0 ],
+					"fwbwbal" : [ 0.65 ],
+					"glissando" : [ 0 ],
+					"maxpitch" : [ 65 ],
+					"minpitch" : [ 42 ],
+					"modpitch" : [ 90 ],
+					"trigspeed" : [ 18 ]
+				}
+
+			}
+,
+			"6" : 			{
+				"id" : 6,
+				"data" : 				{
+					"amplitude" : [ 0.224999999999999 ],
+					"duration" : [ 900 ],
+					"envelope" : [ 0.05 ],
+					"fwbwbal" : [ 1.0 ],
+					"glissando" : [ 1 ],
+					"maxpitch" : [ 68 ],
+					"minpitch" : [ 61 ],
+					"modpitch" : [ -12 ],
+					"trigspeed" : [ 25 ]
+				}
+
+			}
+,
+			"7" : 			{
+				"id" : 7,
+				"data" : 				{
+					"amplitude" : [ 0.025 ],
+					"duration" : [ 2000 ],
+					"envelope" : [ 1.0 ],
+					"fwbwbal" : [ 0.0 ],
+					"glissando" : [ 0 ],
+					"maxpitch" : [ 90 ],
+					"minpitch" : [ 90 ],
+					"modpitch" : [ -65 ],
+					"trigspeed" : [ 30 ]
+				}
+
+			}
+,
+			"8" : 			{
+				"id" : 8,
+				"data" : 				{
+					"amplitude" : [ 0.025 ],
+					"duration" : [ 10 ],
+					"envelope" : [ 1.0 ],
+					"fwbwbal" : [ 0.0 ],
+					"glissando" : [ 0 ],
+					"maxpitch" : [ 3 ],
+					"minpitch" : [ 1 ],
+					"modpitch" : [ 103 ],
+					"trigspeed" : [ 101 ]
+				}
+
+			}
+
+		}
+
+	}
+
+}

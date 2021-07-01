@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<?xml-stylesheet href="./_c74_tut.xsl" type="text/xsl"?>
+
+<chapter name="Delicious Tutorials: TB-303">
+
+<setdocpatch name="TB-303" patch="06-tb-303.maxpat"/>
+<previous name="05boomerang">Boomerang</previous>
+<next name="07pitchshift">Pitch Shifting</next>
+<parent name="00_delicioustutorials">Max Tutorials</parent>
+
+<indexinfo category="Basics" title="TB-303">One of the most popular pieces of musical hardware, realized (kind of) in Max</indexinfo>
+
+<h1>TB-303</h1>
+
+<h2><a href="https://www.youtube.com/watch?v=UQh0-niMnt4">Watch on YouTube</a></h2>
+
+<h2>Commentary</h2>
+<p>Alright, so maybe this is a bit of clickbait--certainly this tutorial doesn't build a TB-303. But it does make an instrument that sounds a bit like a TB-303, and more importantly it demonstrates the fundamental components of virtually every single musical synthesizer. The combination of borax and poly is also an interesting way to implement a monophonic synthesizer that can does portamento when one key is pressed before another is released.</p>
+
+<h2>Errata</h2>
+<p>When I made this tutorial, I somehow didn't know about objects like poly, borax and ddg.mono, all amazingly useful objects that can handle the messy business of managing MIDI and polyphony so that you don't have to. Especially if you watch the first two or three parts to this tutorial, you'll see that I waste a lot of time implementing similar functionality from scratch. Save yourself the trouble and just use borax and poly</p>
+
+<seealsolist>
+  <seealso name="borax"/>
+  <seealso name="poly"/>
+  <seealso name="stripnote"/>
+  <seealso name="mtof"/>
+  <seealso name="adsr~"/>
+  <seealso name="biquad~"/>
+  <seealso name="filtergraph~"/>
+  <seealso name="filtercoeff~"/>
+  <seealso name="line~"/>
+  <seealso name="saw~"/>
+  <seealso name="seq"/>
+  <seealso name="midiparse"/>
+  <seealso name="midiflush"/>
+</seealsolist>
+
+</chapter>

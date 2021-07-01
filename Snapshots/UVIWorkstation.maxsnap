@@ -1,0 +1,21 @@
+{
+	"filetype" : "C74Snapshot",
+	"version" : 2,
+	"minorversion" : 0,
+	"name" : "UVIWorkstation",
+	"origin" : "UVIWorkstationVSTx64.dll",
+	"type" : "VST",
+	"subtype" : "Instrument",
+	"embed" : 0,
+	"snapshot" : 	{
+		"pluginname" : "UVIWorkstationVSTx64.dll",
+		"plugindisplayname" : "UVIWorkstation",
+		"pluginsavedname" : "E:/64/UVIWorkstationVSTx64.dll",
+		"pluginsaveduniqueid" : 0,
+		"version" : 1,
+		"isbank" : 0,
+		"isbase64" : 1,
+		"blob" : "769.CMlaKA....fQPMDZ....ATkUIcE...P.....APTYlEVcrQG..............................HPwUYURzD.....NZ...3wY6Y11aZCCDG+88SQT9.zPnH02DpVKzGPaTP.Cs25EN.KEri7Crx29cwNjPBO1sJsJMipP1mOe9+Ye9GR0QeeZuV2ckG9I5Q1BJC7dkrBZ6668vlThT11ugu2yI7eRRlnY3.sZgFl.qR4s8CahsuWq3CSHavt9dcoxTrsMFcg4DchxqO9E02qOn.wq5Uffn3BLR4l5BL9JJqv33Mr3I7W3RUVHshyHPb.0xb8oWSqJQBkYTvPByXnhR5Sj3B46MPqR0ppYXOlDDpm9Q1rJWLyBdu9MYUSaM+374PrJWKX+FmVLCEfcY1eSBmrWnevksLg+UKSy5KSTv9YXTmkzjYBfc.EMjH1JFSyyj080Jv1fNiVzYLOgu+IjId3b6vIBIXK0PedBqHK5LQPXxTtDFDqHqAYUiigUzIbVt4pmzO9VbhVRWCOK35zBM0ig9TzqyRBiAIl9ei+quBaLMegtXoocXyaMCLER3wTksfOazcLj6B5+SjYvtyun+NQnhO6YbDHUBZrZ6.iHrEUGACaowwJAPv6QKL55b01kG2bLoiUTN6.k5kW8nKXjjReyqB1yLtxiHXKiFFy0hXzquzuW2ddc53ElUUhZO6xN5ca+rRFbymjlBhryoxH0mmuKrSAVO1ZLafYYcNvEl2sXabRwd66TqgGUqdClOWB1Bs5hXJHjlvePFvGbJE1nVNg2T+WjRQAmspKqtTI3I1fayD4wB2CZ4HNxWDmpDtvoRb5XfM6PLr5aSWec.9mEyiL1ranBaw41XdgGiGQCGBqeTMD9mqgnfSsSEEjAgu.r+Y9Un2M1u4mCrenC6W2KG12g8cXeG1eKl9CE6eymCreSG1utWNruC66v9Nr+VL8GJ1u0mCr+MNrecubXeG12g8++C6imT68+7OJv7ZK4OMTf8sgt6pn.6CF8azwLkPB"
+	}
+
+}

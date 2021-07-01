@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<?xml-stylesheet href="./_c74_tut.xsl" type="text/xsl"?>
+
+<chapter name="Delicious Tutorials: Contents">
+
+<setdocpatch name="Sawcloud" patch="18-sawcloud.maxpat"/>
+<previous name="Fisheye">Fisheye</previous>
+<next name="2d.wave~: A glitchy love story">2d.wave~: A glitchy love story</next>
+<parent name="00_delicioustutorials">Max Tutorials</parent>
+
+<indexinfo category="Basics" title="Karplus Strong">Modeling a plucked string in Max</indexinfo>
+
+<h1>Karplus Strong</h1>
+
+<h2>Commentary</h2>
+
+<p>The Karplus Strong algorithm is old. Almost as old as FM synthesis, the Karplus-Strong algorithm dates back to a paper written by Kevin Karplus and Alex Strong in 1983, called "Digital Synthesis of Plucked String and Drum Timbres". The idea is, you imagine a string as a combination of an excitation and a simple resonant filter. The excitation is noisy, containing energy at all frequencies. For a resonant filter, the algorithm uses a simple delay line. Frequencies passing through the delay line will interfere destructively with copies of themselves, unless the period of a frequency is the same as the length of the delay line.</p>
+
+<h2>Ingredients</h2>
+<p>
+    <ul>
+        <li>adsr~</li>
+        <li>noise~</li>
+        <li>tapin~</li>
+        <li>tapout~</li>
+        <li>onepole~</li>
+        <li>expr</li>
+    </ul>
+</p>
+
+<seealsolist>
+</seealsolist>
+
+</chapter>

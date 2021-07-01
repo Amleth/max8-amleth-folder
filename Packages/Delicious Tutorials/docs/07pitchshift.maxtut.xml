@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<?xml-stylesheet href="./_c74_tut.xsl" type="text/xsl"?>
+
+<chapter name="Delicious Tutorials: Pitch Shifting">
+
+<setdocpatch name="Pitch Shifting" patch="07-pitch_shift.maxpat"/>
+<previous name="06tb303">TB-303</previous>
+<next name="08circularsequencer">Circular Sequencer</next>
+<parent name="00_delicioustutorials">Max Tutorials</parent>
+
+<indexinfo category="Basics" title="Pitch Shifting">Take a peek at how pitch shifting works, using variable-length delay lines</indexinfo>
+
+<h1>Pitch Shifting</h1>
+
+<h2><a href="https://www.youtube.com/watch?v=uyzY_ZP54pA">Watch on YouTube</a></h2>
+
+<h2>Commentary</h2>
+<p>If an object is moving towards you, it moves up in pitch. After it passes you and starts to move away, it moves down in pitch. This is called the Doppler Effect, which you already knew. Simulating the Doppler Effect using a variable delay line (a delay line that continuously becomes shorter or longer) lets us shift pitch up and down without needing to duct tape our laptop to a race car or anything. The trick is to mute the audio coming through the delay line exactly when you make any discontinuous changes in its length. They call that windowing.</p>
+
+<seealsolist>
+  <seealso name="borax"/>
+  <seealso name="poly"/>
+  <seealso name="stripnote"/>
+  <seealso name="mtof"/>
+  <seealso name="adsr~"/>
+  <seealso name="biquad~"/>
+  <seealso name="filtergraph~"/>
+  <seealso name="filtercoeff~"/>
+  <seealso name="line~"/>
+  <seealso name="saw~"/>
+  <seealso name="seq"/>
+  <seealso name="midiparse"/>
+  <seealso name="midiflush"/>
+</seealsolist>
+
+</chapter>

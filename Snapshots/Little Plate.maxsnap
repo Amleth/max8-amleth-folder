@@ -1,0 +1,21 @@
+{
+	"filetype" : "C74Snapshot",
+	"version" : 2,
+	"minorversion" : 0,
+	"name" : "Little Plate",
+	"origin" : "LittlePlate.dll",
+	"type" : "VST",
+	"subtype" : "AudioEffect",
+	"embed" : 0,
+	"snapshot" : 	{
+		"pluginname" : "LittlePlate.dll",
+		"plugindisplayname" : "Little Plate",
+		"pluginsavedname" : "E:/64/LittlePlate.dll",
+		"pluginsaveduniqueid" : 0,
+		"version" : 1,
+		"isbank" : 0,
+		"isbase64" : 1,
+		"blob" : "650.CMlaKA....fQPMDZ....AvDTLgC...P.....APTYlEVcrQG..............................HfSWkDQGUDUfzCHLkFczwVYf.EagQWY6zfUEI0TI8jSfzCHzrSCSEjUEQzWBk0WVUjTSkzSNAROfTiKy3hL6zfPUkDSD4TUMAROfDSMxTyL6z.TRUzTEQEH8.SLvDCLv.CLvPCN3.SLvDCLv.SLKwCPbkVTuQUWboFa3DELagTW4DUSR8FPWQ1TKwTQwTCPfcDLecCYwnSP1.FQDszV+7TZjUEWqQEPx70NTQiSBkzTLgjMGATYlgVVw.TVlcCQSMVaG8UT+f0M1PyPHgTWOkFTPQ0XZMUV23SOuQ1RAcVZBsCMvv0MyLCYf8iQbojM.cjTQgVZhQTRH8CVvv0MZcSS.YDYUITWzjlV9DUMvr0QIkEOhgjS3TjZdA1ZDgyL1.iTw7yVJUjPXgDZ5jCMbwVVnIkO53TUQskMfwTSbMiNY8lRpklRAMyWY8kRDYSYVAyaTUlQ1rzM0HkX.40YlclQ7HTSAYkQgsTVSs0ZaUCUY81WnE1ZqwjTdgjRQQEMVkSLmYFYcQTO4T0VDACXH0FYRUDUr4zV4ryaDoiXzHTM67iaa4jYRs0VZcSM3DiZcQiMwvjaVQCRFUCW73CYkICZ4bCOogzYDEyaEwzRynFROgCNJ4kWybUSVIzQuAEPnE0MhQyS1DiaIgkQfEzYBEjUQAzM+LFXRcSY8PDP43TVAIzVPIkOesTPwXlQQkEP3L1Z3HFakkzUlwyU1DiPSsCVmwkYu8jacA0U1TyQw.VLY0VQ6DSLGo1NpIVYKIySFsiPLECLv.CL0vTMfACL6z."
+	}
+
+}

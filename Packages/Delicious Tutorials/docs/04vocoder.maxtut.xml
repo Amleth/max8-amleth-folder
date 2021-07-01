@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<?xml-stylesheet href="./_c74_tut.xsl" type="text/xsl"?>
+
+<chapter name="Delicious Tutorials: Vocoder">
+
+<setdocpatch name="Vocoder" patch="04-vocoder.maxpat"/>
+<previous name="03stutter">Stutter</previous>
+<next name="05boomerang">Boomerang</next>
+<parent name="00_delicioustutorials">Max Tutorials</parent>
+
+<indexinfo category="Basics" title="Vocoder">Frequency domain processing, robot sounds</indexinfo>
+
+<h1>Vocoder</h1>
+
+<h2><a href="https://www.youtube.com/watch?v=4feOFLX6238">Watch on YouTube</a></h2>
+
+<h2>Commentary</h2>
+
+<p>It seems if you can modulate the voice without making it unrecognizable, human beings will never get tired of hearing it in music. Father of Autotune, brother of timestretch, the Vocoder is nothing less than that thing that makes your voice sounds like a robot. How does it work? A bank of filters measures the shape of the voice in the frequency domain. That frequency shape is then multiplied by a carrier signal, usually a rich harmonic source like a sawtooth wave. The result sounds like a robot, at least a bit.</p>
+
+<seealsolist>
+  <seealso name="pfft~"/>
+  <seealso name="selector~"/>
+  <seealso name="zerox~"/>
+  <seealso name="sqrt~"/>
+  <seealso name="sfplay~"/>
+  <seealso name="saw~"/>
+  <seealso name="rect~"/>
+  <seealso name="tri~"/>
+  <seealso name="tapin~"/>
+  <seealso name="tapout~"/>
+  <seealso name="kslider~"/>
+</seealsolist>
+
+</chapter>

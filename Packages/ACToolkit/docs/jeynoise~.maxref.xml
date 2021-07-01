@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml-stylesheet href="./_c74_ref.xsl" type="text/xsl"?>
+
+<c74object name="jeynoise~" module="ACToolkit">
+
+	<digest>
+		A sine and cosine wave oscillator that works based on Period-by-Period Synthesis technique
+	</digest>
+
+	<description>
+		Frequency, period-duration, and phase offset set the state of the object. The frequencies are determined by external signals or internally-generated-and-redistributed PseudoRandom Numbers (PRNs). Also, the redistribution of the PRNs (for setting frequencies) is performed according to a list-style Probability Distribution Function (PDF). The discrete probabilities of the PDF-list can be interpolated.
+	</description>
+
+	<!--METADATA-->
+	<metadatalist>
+		<metadata name="author">Jeyong Jung</metadata>
+		<metadata name="tag">ACToolkit</metadata>
+		<metadata name="tag">Probability Distribution Function</metadata>
+		<metadata name="tag">Redistribution</metadata>
+		<metadata name="tag">PDF Transformation</metadata>
+		<metadata name="tag">Period-by-Period Synthesis</metadata>
+		<metadata name="tag">jey-Noise</metadata>
+	</metadatalist>
+
+	<!--INLETS-->
+	<inletlist>
+		<inlet id="0" type="anything">
+			<digest>(SIGNAL Hz.) frequencies   (LIST of numbers) PDF of frequencies   (MESSAGEs) various arguments</digest>
+		</inlet>
+		<inlet id="1" type="signal">
+			<digest>(SIGNAL) period durations</digest>
+		</inlet>
+		<inlet id="2" type="signal">
+			<digest>(-1 &lt; SIGNAL &lt; 1) phase offsets</digest>
+		</inlet>
+		<inlet id="3" type="signal">
+			<digest>(0 &lt; SIGNAL) resetting jeynoise</digest>
+		</inlet>
+	</inletlist>
+
+	<!--OUTLETS-->
+	<outletlist>
+		<outlet id="0" type="signal">
+			<digest>(-1 ≤ SIGNAL ≤ 1) sine waves</digest>
+		</outlet>
+		<outlet id="1" type="signal">
+			<digest>(0 ≤ SIGNAL &lt; 1) phase signals</digest>
+		</outlet>
+		<outlet id="2" type="signal">
+			<digest>(SIGNAL Hz.) frequency is outputted when the new sine-wave-period(s) begins, 0 otherwise</digest>
+		</outlet>
+		<outlet id="3" type="signal">
+			<digest>(-1 ≤ SIGNAL ≤ 1) cosine waves</digest>
+		</outlet>
+		<outlet id="4" type="bang">
+			<digest>(BANG) done bang after PDF renewal</digest>
+		</outlet>
+	</outletlist>
+
+	<!--ARGUMENTS-->
+	<objarglist>
+		<objarg name="not-setting-to-'exp'-mode" optional="0" type="list">
+			<digest>Lets object to perform band-limited Period-by-Period Synthesis</digest>
+			<description>
+				When the first argument is a number or there's no argument, the object doesn't run in the 'exp' mode. In this case, the argument(s) set/sets the following.<br /><br />
+				&#160;&#160;&#160;&#160;&#160;—<b><u> 1st</u>: </b> 'period duration' factor [float./int.]<br />
+				&#160;&#160;&#160;&#160;&#160;—<b><u> 2nd</u>: </b> 'phase offset' factor [float./int.]<br />
+			</description>
+		</objarg>
+		<objarg name="setting-to-'exp'-mode'" optional="1" type="message">
+			<digest>Lets object to perform in 'exp' mode</digest>
+			<description>
+				If the command 'exp' is the first argument, then the object runs in the 'exp' mode. The object in this mode does not support receiving any other arguments written within it.<br /><br />
+				&#160;&#160;&#160;&#160;&#160;—<b><u> 1st</u> (required): </b> 'exp' (mode specifier)<br />
+			</description>
+		</objarg>
+	</objarglist>
+
+	<!--ATTRIBUTES-->
+	<attributelist>
+		<attribute name='err_msg' get='1' set='1' type='float./int.' size='1' >
+			<digest>notify frequency-input in excess</digest>
+			<description>
+				[default: 0] <b>[affects the object only when it receives external frequencies]</b> Any value greater than 0 turns on the attribute.
+			</description>
+		</attribute>
+		<attribute name='proc_time' get='1' set='1' type='float./int.' size='1' >
+			<digest>notify time required for processing PDF-list</digest>
+			<description>
+				[default: 0] Any value greater than 0 turns on the attribute. <br /><i><b>NB)</b></i> On Windows, the measurement tends to result only in an integer such as 0 MS or 1 MS. This is because the rate of the clock-ticks used in the "Microsoft C Runtime Library" is not enough high.
+			</description>
+		</attribute>
+		<attribute name='active' get='1' set='1' type='float./int.' size='1' >
+			<digest>enable/disable object's performance</digest>
+			<description>
+				[default: 1] Any value greater than 0 turns on the attribute.
+			</description>
+		</attribute>
+		<attribute name='ignore_0PDF' get='1' set='1' type='float./int.' size='1' >
+			<digest>ignore null PDF-lists (comprise only 0s)</digest>
+			<description>
+				[default: 0] <b>[affects the object only in the stand-alone mode]</b> Any value greater than 0 turns on the attribute.
+			</description>
+		</attribute>
+		<attribute name='f0' get='1' set='1' type='float./int.' size='1' >
+			<digest>first frequency-boundary value</digest>
+			<description>
+				[default: 1] <b>[affects the object only in the stand-alone mode]</b> Any value that exceeds the folding boundaries set by the 'fold0' and 'fold1' methods will be folded.
+			</description>
+		</attribute>
+		<attribute name='f1' get='1' set='1' type='float./int.' size='1' >
+			<digest>second frequency-boundary value</digest>
+			<description>
+				[default: 22050] <b>[affects the object only in the stand-alone mode]</b> Any value that exceeds the folding boundaries set by the 'fold0' and 'fold1' methods will be folded.
+			</description>
+		</attribute>
+		<attribute name='fold0' get='1' set='1' type='float./int.' size='1' >
+			<digest>first folding-boundary value</digest>
+			<description>
+				[default: 1] <b>[affects the object only in the stand-alone mode]</b> Any value that exceeds the ultimate limits set by the sampling rate will be limited (see also the "stand-alone mode 2" tab of the object's help file).
+			</description>
+		</attribute>
+		<attribute name='fold1' get='1' set='1' type='float./int.' size='1' >
+			<digest>second folding-boundary value</digest>
+			<description>
+				[default: 22050] <b>[affects the object only in the stand-alone mode]</b> Any value that exceeds the ultimate limits set by the sampling rate will be limited (see also the "stand-alone mode 2" tab of the object's help file).
+			</description>
+		</attribute>
+	</attributelist>
+
+	<!--MESSAGES-->
+	<methodlist>
+		<method name="f0">
+			<digest>first frequency-boundary</digest>
+			<description>
+				[default: 1] <b>[affects the object only in the stand-alone mode]</b> Any value that exceeds the folding boundaries set by the 'fold0' and 'fold1' methods will be folded.
+			</description>
+		</method>
+		<method name="f1">
+			<digest>second frequency-boundary</digest>
+			<description>
+				[default: 22050] <b>[affects the object only in the stand-alone mode]</b> Any value that exceeds the folding boundaries set by the 'fold0' and 'fold1' methods will be folded.
+			</description>
+		</method>
+		<method name="fold0">
+			<digest>first folding-boundary</digest>
+			<description>
+				[default: 1] <b>[affects the object only in the stand-alone mode]</b> Any value that exceeds the ultimate limits set by the sampling rate will be limited (see also the "stand-alone mode 2" tab of the object's help file).
+			</description>
+		</method>
+		<method name="fold1">
+			<digest>second folding-boundary</digest>
+			<description>
+				[default: 22050] <b>[affects the object only in the stand-alone mode]</b> Any value that exceeds the ultimate limits set by the sampling rate will be limited (see also the "stand-alone mode 2" tab of the object's help file).
+			</description>
+		</method>
+		<method name="info">
+			<digest>notify frequency-boundary-related information on Max Console</digest>
+			<description>
+				No argument is required.
+			</description>
+		</method>
+		<method name="rectify">
+			<digest>enable/disable 'rectify' method</digest>
+			<description>
+				[default: 0] <b>[affects the object only in the stand-alone mode]</b> Any value greater than 0 turns on the method.
+			</description>
+		</method>
+		<method name="sine^2_spread">
+			<digest>continuity factor of 'sine^2' component</digest>
+			<description>
+				[default: 1] <b>[affects the object only in the stand-alone mode]</b> Negative values turn to positives, and the values greater than 1 will be wrapped.
+			</description>
+		</method>
+		<method name="arcsec_spread">
+			<digest>continuity factor of 'arcsec' component</digest>
+			<description>
+				[default: 0] <b>[affects the object only in the stand-alone mode]</b> Negative values turn to positives, and the values greater than 1 will be wrapped.
+			</description>
+		</method>
+		<method name="gauss_spread">
+			<digest>continuity factor of 'gauss' component</digest>
+			<description>
+				[default: 0] <b>[affects the object only in the stand-alone mode]</b> Negative values turn to positives, and the values greater than 1 will be wrapped.
+			</description>
+		</method>
+		<method name="sine^2_ratio">
+			<digest>proportion of 'sine^2' component</digest>
+			<description>
+				[default: 1] <b>[affects the object only in the stand-alone mode]</b> Negative values turn to positives, and the values greater than 1 will be wrapped.
+			</description>
+		</method>
+		<method name="arcsec_ratio">
+			<digest>proportion of 'arcsec' component</digest>
+			<description>
+				[default: 0] <b>[affects the object only in the stand-alone mode]</b> Negative values turn to positives, and the values greater than 1 will be wrapped.
+			</description>
+		</method>
+		<method name="gauss_ratio">
+			<digest>proportion of 'gauss' component</digest>
+			<description>
+				[default: 0] <b>[affects the object only in the stand-alone mode]</b> Negative values turn to positives, and the values greater than 1 will be wrapped.
+			</description>
+		</method>
+		<method name="gauss_shape">
+			<digest>shape of 'gauss' component</digest>
+			<description>
+				[default: 0.5] <b>[affects the object only in the stand-alone mode]</b> Negative values turn to positives, and the values greater than 1 will be wrapped.
+			</description>
+		</method>
+	</methodlist>
+
+	<!--SEEALSO-->
+	<seealsolist>
+		<seealso name="jeyrand~"/>
+		<seealso name="pink~"/>
+		<seealso name="noise~"/>
+		<seealso name="jeyrand"/>
+		<seealso name="jeyhisto~"/>
+	</seealsolist>
+
+	<!--MISC.-->
+	<misc name="Input">
+		<entry name="1st (leftmost)">
+			<description>
+				<b>[inactivated in the exp mode] (SIGNAL Hz.)</b> frequencies<br /><b>(LIST of numbers)</b> PDF of frequencies<br /><b>(MESSAGEs)</b> various arguments
+			</description>
+		</entry>
+		<entry name="2nd (when it isn't in the exp mode)">
+			<description>
+				<b>(SIGNAL)</b> period durations
+			</description>
+		</entry>
+		<entry name="2nd (when it's in the exp mode)">
+			<description>
+				<b>(1 ≤ SIGNAL)</b> downscaling frequencies
+			</description>
+		</entry>
+		<entry name="3rd">
+			<description>
+				<b>[inactivated in the exp mode] (-1 &lt; SIGNAL &lt; 1)</b> phase offsets
+			</description>
+		</entry>
+		<entry name="4th">
+			<description>
+				<b>[inactivated in the exp mode] (0 &lt; SIGNAL)</b> resetting jeynoise
+			</description>
+		</entry>
+	</misc>
+	<misc name="Output">
+		<entry name="1st (leftmost)">
+			<description>
+				<b>(-1 ≤ SIGNAL ≤ 1)</b> sine waves
+			</description>
+		</entry>
+		<entry name="2nd">
+			<description>
+				<b>(0 ≤ SIGNAL &lt; 1)</b> phase signals
+			</description>
+		</entry>
+		<entry name="3rd">
+			<description>
+				<b>[inactivated in the exp mode] (SIGNAL Hz.)</b> frequency is outputted when the new sine-wave-period(s) begins, 0 otherwise
+			</description>
+		</entry>
+		<entry name="4th">
+			<description>
+				<b>(-1 ≤ SIGNAL ≤ 1)</b> cosine waves
+			</description>
+		</entry>
+		<entry name="5th">
+			<description>
+				<b>[inactivated in the exp mode] (BANG)</b> done bang after PDF renewal
+			</description>
+		</entry>
+	</misc>
+
+</c74object>

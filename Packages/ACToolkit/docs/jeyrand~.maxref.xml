@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml-stylesheet href="./_c74_ref.xsl" type="text/xsl"?>
+
+<c74object name="jeyrand~" module="ACToolkit">
+
+	<digest>
+		Redistributes samples as specified by a user-defined Probability-Distribution-Function (PDF) list
+	</digest>
+
+	<description>
+		Its PDF is prescribed by a list of numbers. Though the list-style PDF prescription discontinuously defines probabilities along the sample space of the object, the gaps between the probabilities can be filled by means of 3 different interpolation components included in the object.
+	</description>
+
+	<!--METADATA-->
+	<metadatalist>
+		<metadata name="author">Jeyong Jung</metadata>
+		<metadata name="tag">ACToolkit</metadata>
+		<metadata name="tag">Probability Distribution Function</metadata>
+		<metadata name="tag">Redistribution</metadata>
+		<metadata name="tag">PDF Transformation</metadata>
+	</metadatalist>
+
+	<!--INLETS-->
+	<inletlist>
+		<inlet id="0" type="anything">
+			<digest>(0 ≤ SIGNAL ≤ 1) samples to be redistributed   (LIST of numbers) PDF list   (MESSAGEs) various arguments</digest>
+		</inlet>
+	</inletlist>
+
+	<!--OUTLETS-->
+	<outletlist>
+		<outlet id="0" type="signal">
+			<digest>(0 ≤ SIGNAL ≤ 1) redistributed samples</digest>
+		</outlet>
+		<outlet id="1" type="signal">
+			<digest>(SIGNAL Hz.) frequencies</digest>
+		</outlet>
+		<outlet id="2" type="bang">
+			<digest>(BANG) indicates PDF renewal</digest>
+		</outlet>
+	</outletlist>
+
+	<!--ARGUMENTS-->
+	<objarglist>
+		<objarg name="not-to-set-mode" optional="0" type="list">
+			<digest>enables all three three possible modes at once</digest>
+			<description>
+				All the three PDF-list-interpolation components of the object are available when the first argument is a number or there's no argument.<br /><br />
+				&#160;&#160;&#160;&#160;&#160;—<b><u> 1st</u>: </b> 'spread' factor of <m>sine^2</m> component [float./int.]<br />
+				&#160;&#160;&#160;&#160;&#160;—<b><u> 2nd</u>: </b> 'ratio' factor of <m>sine^2</m> component [float./int.]<br />
+				&#160;&#160;&#160;&#160;&#160;—<b><u> 3rd</u>: </b> 'spread' factor of <m>arcsec</m> component [float./int.]<br />
+				&#160;&#160;&#160;&#160;&#160;—<b><u> 4th</u>: </b> 'ratio' factor of <m>arcsec</m> component [float./int.]<br />
+				&#160;&#160;&#160;&#160;&#160;—<b><u> 5th</u>: </b> 'spread' factor of <m>gauss</m> component [float./int.]<br />
+				&#160;&#160;&#160;&#160;&#160;—<b><u> 6th</u>: </b> 'ratio' factor of <m>gauss</m> component [float./int.]<br />
+				&#160;&#160;&#160;&#160;&#160;—<b><u> 7th</u>: </b> 'shape' factor of <m>gauss</m> component [float./int.]<br />
+				&#160;&#160;&#160;&#160;&#160;—<b><u> 8th</u>: </b> 'int/ext' factor of the object [float./int.]<br />
+			</description>
+		</objarg>
+		<objarg name="setting-mode" optional="1" type="message">
+			<digest>sets the mode of the object</digest>
+			<description>
+				Sets the object to use only a specific PDF-list-interpolation component. <br /><br />
+				<b>&lt;<i>To set the object to <m>sine^2</m> mode</i>&gt;</b><br />
+				&#160;&#160;&#160;&#160;&#160;—<b><u> 1st</u> (required): </b> 'sine^2' (mode specifier)<br />
+				&#160;&#160;&#160;&#160;&#160;—<b><u> 2nd</u>: </b> 'spread' factor of <m>sine^2</m> component [float./int.]<br />
+				&#160;&#160;&#160;&#160;&#160;—<b><u> 3rd</u>: </b> 'int/ext' factor of the object [float./int.]<br /><br />
+				<b>&lt;<i>To set the object to <m>arcsec</m> mode</i>&gt;</b><br />
+				&#160;&#160;&#160;&#160;&#160;—<b><u> 1st</u> (required): </b> 'arcsec' (mode specifier)<br />
+				&#160;&#160;&#160;&#160;&#160;—<b><u> 2nd</u>: </b> 'spread' factor of <m>arcsec</m> component [float./int.]<br />
+				&#160;&#160;&#160;&#160;&#160;—<b><u> 3rd</u>: </b> 'int/ext' factor of the object [float./int.]<br /><br />
+				<b>&lt;<i>To set the object to <m>gauss</m> mode</i>&gt;</b><br />
+				&#160;&#160;&#160;&#160;&#160;—<b><u> 1st</u> (required): </b> 'gauss' (mode specifier)<br />
+				&#160;&#160;&#160;&#160;&#160;—<b><u> 2nd</u>: </b> 'spread' factor of <m>gauss</m> component [float./int.]<br />
+				&#160;&#160;&#160;&#160;&#160;—<b><u> 3rd</u>: </b> 'shape' factor of <m>gauss</m> component [float./int.]<br />
+				&#160;&#160;&#160;&#160;&#160;—<b><u> 4th</u>: </b> 'int/ext' factor of the object [float./int.]<br />
+			</description>
+		</objarg>
+	</objarglist>
+
+	<!--ATTRIBUTES-->
+	<attributelist>
+		<attribute name='err_msg' get='1' set='1' type='float./int.' size='1' >
+			<digest>notify input in excess</digest>
+			<description>
+				[default:0] Any value greater than 0 turns on the attribute.
+			</description>
+		</attribute>
+		<attribute name='proc_time' get='1' set='1' type='float./int.' size='1' >
+			<digest>notify time required for processing PDF-list</digest>
+			<description>
+				[default: 0] Any value greater than 0 turns on the attribute. <br /><i><b>NB)</b></i> On Windows, the measurement tends to result only in an integer such as 0 MS or 1 MS. This is because the rate of the clock-ticks used in the "Microsoft C Runtime Library" is not enough high.
+			</description>
+		</attribute>
+		<attribute name='active' get='1' set='1' type='float./int.' size='1' >
+			<digest>enable/disable object's performance</digest>
+			<description>
+				[default: 1] Any value greater than 0 turns on the attribute.
+			</description>
+		</attribute>
+		<attribute name='ignore_0PDF' get='1' set='1' type='float./int.' size='1' >
+			<digest>ignore null PDF-lists (comprise only 0s)</digest>
+			<description>
+				[default: 0] Any value greater than 0 turns on the attribute.
+			</description>
+		</attribute>
+		<attribute name='f0' get='1' set='1' type='float./int.' size='1' >
+			<digest>first frequency-boundary</digest>
+			<description>
+				[default: 1] Any value that exceeds the folding boundaries set by the 'fold0' and 'fold1' methods will be folded.
+			</description>
+		</attribute>
+		<attribute name='f1' get='1' set='1' type='float./int.' size='1' >
+			<digest>second frequency-boundary</digest>
+			<description>
+				[default: 22050] Any value that exceeds the folding boundaries set by the 'fold0' and 'fold1' methods will be folded.
+			</description>
+		</attribute>
+		<attribute name='fold0' get='1' set='1' type='float./int.' size='1' >
+			<digest>first folding-boundary</digest>
+			<description>
+				[default: 1] Any value that exceeds the ultimate limits set by the sampling rate will be limited (see also the "frequency boundaries" tab of the object's help file).
+			</description>
+		</attribute>
+		<attribute name='fold1' get='1' set='1' type='float./int.' size='1' >
+			<digest>second folding-boundary</digest>
+			<description>
+				[default: 22050] Any value that exceeds the ultimate limits set by the sampling rate will be limited (see also the "frequency boundaries" tab of the object's help file).
+			</description>
+		</attribute>
+	</attributelist>
+
+	<!--MESSAGES-->
+	<methodlist>
+		<method name="f0">
+			<digest>first frequency-boundary</digest>
+			<description>
+				[default: 1] Any value that exceeds the folding boundaries set by the 'fold0' and 'fold1' methods will be folded.
+			</description>
+		</method>
+		<method name="f1">
+			<digest>second frequency-boundary</digest>
+			<description>
+				[default: 22050] Any value that exceeds the folding boundaries set by the 'fold0' and 'fold1' methods will be folded.
+			</description>
+		</method>
+		<method name="fold0">
+			<digest>first folding-boundary</digest>
+			<description>
+				[default: 1] Any value that exceeds the ultimate limits set by the sampling rate will be limited (see also the "frequency boundaries" tab of the object's help file).
+			</description>
+		</method>
+		<method name="fold1">
+			<digest>second folding-boundary</digest>
+			<description>
+				[default: 22050] Any value that exceeds the ultimate limits set by the sampling rate will be limited (see also the "frequency boundaries" tab of the object's help file).
+			</description>
+		</method>
+		<method name="info">
+			<digest>notify frequency-boundary-related information on Max Console</digest>
+			<description>
+				No argument is required.
+			</description>
+		</method>
+		<method name="rectify">
+			<digest>enable/disable 'rectify' method</digest>
+			<description>
+				[default: 0] Any value greater than 0 turns on the method.
+			</description>
+		</method>
+		<method name="spread">
+			<digest>continuity factor of PDF-list-interpolation component</digest>
+			<description>
+				[default: 1] <b>[only available when the object is set to a specific mode]</b> Negative values turn to positives, and the values greater than 1 will be wrapped.
+			</description>
+		</method>
+		<method name="shape">
+			<digest>shape of 'gauss' component</digest>
+			<description>
+				[default: 0.5] <b>[only available in the 'gauss' mode]</b> Negative values turn to positives, and the values greater than 1 will be wrapped.
+			</description>
+		</method>
+		<method name="int/ext">
+			<digest>ratio between internal sources and external ones</digest>
+			<description>
+				[default: 1] <b>[only available when signals are fed to the object]</b> Negative values turn to positives, and the values greater than 1 will be wrapped.
+			</description>
+		</method>
+		<method name="sine^2_spread">
+			<digest>continuity factor of 'sine^2' component</digest>
+			<description>
+				[default: 1] <b>[only available when the object isn't set to a specific mode]</b> Negative values turn to positives, and the values greater than 1 will be wrapped.
+			</description>
+		</method>
+		<method name="arcsec_spread">
+			<digest>continuity factor of 'arcsec' component</digest>
+			<description>
+				[default: 0] <b>[only available when the object isn't set to a specific mode]</b> Negative values turn to positives, and the values greater than 1 will be wrapped.
+			</description>
+		</method>
+		<method name="gauss_spread">
+			<digest>continuity factor of 'gauss' component</digest>
+			<description>
+				[default: 0] <b>[only available when the object isn't set to a specific mode]</b> Negative values turn to positives, and the values greater than 1 will be wrapped.
+			</description>
+		</method>
+		<method name="sine^2_ratio">
+			<digest>proportion of 'sine^2' component</digest>
+			<description>
+				[default: 1] <b>[only available when the object isn't set to a specific mode]</b> Negative values turn to positives, and the values greater than 1 will be wrapped.
+			</description>
+		</method>
+		<method name="arcsec_ratio">
+			<digest>proportion of 'arcsec' component</digest>
+			<description>
+				[default: 0] <b>[only available when the object isn't set to a specific mode]</b> Negative values turn to positives, and the values greater than 1 will be wrapped.
+			</description>
+		</method>
+		<method name="gauss_ratio">
+			<digest>proportion of 'gauss' component</digest>
+			<description>
+				[default: 0] <b>[only available when the object isn't set to a specific mode]</b> Negative values turn to positives, and the values greater than 1 will be wrapped.
+			</description>
+		</method>
+		<method name="gauss_shape">
+			<digest>shape of 'gauss' component</digest>
+			<description>
+				[default: 0.5] <b>[only available when the object isn't set to a specific mode]</b> Negative values turn to positives, and the values greater than 1 will be wrapped.
+			</description>
+		</method>
+		<method name="out0_enable">
+			<digest>enable/disable first outlet</digest>
+			<description>
+				[default: 1] Any value greater than 0 turns on the flag.
+			</description>
+		</method>
+		<method name="out1_enable">
+			<digest>enable/disable second outlet</digest>
+			<description>
+				[default: 1] Any value greater than 0 turns on the flag.
+			</description>
+		</method>
+	</methodlist>
+
+	<!--SEEALSO-->
+	<seealsolist>
+		<seealso name="jeyrand"/>
+		<seealso name="jeynoise~"/>
+		<seealso name="jeyhisto~"/>
+		<seealso name="noise~"/>
+		<seealso name="pink~"/>
+	</seealsolist>
+
+	<!--MISC.-->
+	<misc name="Input">
+		<entry name="1st">
+			<description>
+				<b>(0 ≤ SIGNAL ≤ 1)</b> samples to be redistributed<br /><b>(LIST of numbers)</b> PDF list<br /><b>(MESSAGEs)</b> various argument
+			</description>
+		</entry>
+	</misc>
+	<misc name="Output">
+		<entry name="1st (leftmost)">
+			<description>
+				<b>(0 ≤ SIGNAL ≤ 1)</b> redistributed samples
+			</description>
+		</entry>
+		<entry name="2nd">
+			<description>
+				<b>(SIGNAL Hz.)</b> frequencies
+			</description>
+		</entry>
+		<entry name="3rd">
+			<description>
+				<b>(BANG)</b> indicates PDF renewal
+			</description>
+		</entry>
+	</misc>
+
+</c74object>
