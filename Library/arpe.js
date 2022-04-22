@@ -1,3 +1,5 @@
+// TODO envoyer les note off sur les notes dérivées quand la note est dépressée
+
 const Max = require('max-api')
 const { between, octs, r } = require('./functions.js')
 
@@ -6,95 +8,218 @@ const { between, octs, r } = require('./functions.js')
 //
 
 const pressedPitches = []
-const velocities = {}
-const linkedPitches = {}
-let lastPitch = null
+const pressedVelocities = {}
+const playedVelocities = {}
+const relatedPitches = {}
+let lastPlayedPitch = null
 
 //
-// ARP
+// PARAMETERS 
 //
 
-function getNext(pitches, rep, last) {
-	Max.post(pitches, rep, last)
-	return pitches.sample()
-	// if (pitches.length === 1) return pitches[0]
-	// if (rep) {
-	// 	let p = null
-	// 	while (!p || p === last) {
-	// 		p = pitches.sample()
-	// 	}
-	// 	return p
-	// }
-	// else {
-	// 	return pitches.sample()
-	// }
-}
+let forcedvel = 82
+Max.addHandler('forcedvel', msg => { forcedvel = msg })
 
-//
-// PARAMETERS
-//
+let hold = false
+Max.addHandler('hold', msg => {
+	if (!msg && hold) pressedPitches.splice(0, pressedPitches.length)
+	hold = msg ? true : false
+})
 
-let arp = false
-let forcedvel = 0
-let octdevprob = 100
-let octdevrange = 1
+let octdevprob = 0
+Max.addHandler('octdevprob', msg => { octdevprob = msg })
+let octdevrange = 0
+Max.addHandler('octdevrange', msg => { octdevrange = msg })
+let octdirection = 'high'
+Max.addHandler('octdirection', msg => { octdirection = msg })
+
+let style = 'up'
+Max.addHandler('style', msg => { style = msg })
+
 let pitchmin = 0
 let pitchmax = 127
-let susped = 0
-let rep = true
-let velatt = 100
-
-Max.addHandler('arp', (msg) => { arp = msg ? true : false })
-Max.addHandler('octdevprob', (msg) => { octdevprob = msg })
-Max.addHandler('forcedvel', (msg) => { forcedvel = msg })
-Max.addHandler('octdevrange', (msg) => { octdevrange = msg })
 Max.addHandler('pitchrange', (...msg) => { [pitchmin, pitchmax] = msg })
+
+let randompitch = 0
+Max.addHandler('randompitch', msg => { randompitch = msg })
+
+let rep = true
+Max.addHandler('rep', msg => { rep = msg ? true : false })
+
+let skipstepprob = 0
+Max.addHandler('skipstepprob', msg => { skipstepprob = msg })
+
+let susped = 0
 Max.addHandler('susped', msg => { susped = msg })
-Max.addHandler('rep', (msg) => { rep = msg ? true : false })
-Max.addHandler('velatt', (msg) => { velatt = msg })
+
+let transp = 0
+let transprep = 1
+let transprange = 2
+let transp_steps = []
+let transp_current_step = 0
+function reset_trans_steps() {
+	const steps = []
+	for (let range = 0; range < transprange; range++) {
+		for (let rep = 0; rep < transprep; rep++) {
+			for (const p of pressedPitches) {
+				const _p = p + range * transp
+				if (_p >= pitchmin && _p <= pitchmax) {
+					steps.push(_p)
+				}
+			}
+		}
+	}
+	transp_steps = steps
+	transp_current_step = 0
+}
+Max.addHandler('transp', msg => { transp = msg; reset_trans_steps() })
+Max.addHandler('transprep', msg => { transprep = msg; reset_trans_steps() })
+Max.addHandler('transprange', msg => { transprange = msg; reset_trans_steps() })
+
+let velatt = 69
+Max.addHandler('velatt', msg => { velatt = msg })
+
+//
+// HELPERS
+//
+
+function noteon(p, v) {
+	Max.post('🏙' + '  ' + p + ' ' + v)
+	Max.outlet([p, v])
+}
+
+function noteoff(p) {
+	if (playedVelocities[p] > 0) {
+		playedVelocities[p] = 0
+		Max.post('🌃' + '  ' + p)
+		Max.outlet([p, 0])
+	}
+}
+
+function getNext(pressedPitches, lastPlayedPitch) {
+
+	let pitch
+
+	if (transp) {
+		Max.post(transp)
+		Max.post(transp_steps)
+		pitch = transp_steps[transp_current_step]
+		transp_current_step++
+		if (transp_current_step === transp_steps.length) {
+			transp_current_step = 0
+		}
+	} else {
+		if (r(0, 100) < randompitch) {
+			pitch = pressedPitches.sample()
+		}
+		else {
+			let lastIndex
+			let nextIndex
+			const sortedPressedPitches = pressedPitches.sort()
+			switch (style) {
+				case 'up':
+					lastIndex = sortedPressedPitches.indexOf(lastPlayedPitch)
+					nextIndex = lastIndex === -1
+						? 0
+						: (lastIndex + 1 === sortedPressedPitches.length) ? 0 : lastIndex + 1
+					pitch = sortedPressedPitches[nextIndex]
+					break
+				case 'down':
+					lastIndex = sortedPressedPitches.indexOf(lastPlayedPitch)
+					nextIndex = lastIndex === -1
+						? 0
+						: (lastIndex - 1 === -1) ? sortedPressedPitches.length - 1 : lastIndex - 1
+					pitch = sortedPressedPitches[nextIndex]
+					break
+				case 'random':
+					pitch = pressedPitches.sample()
+					break
+			}
+		}
+	}
+
+	return pitch
+}
 
 //
 // TRIG/OUT
 //
 
-Max.addHandler('note', (...msg) => {
-	const [pitch, velocity] = msg
+function pitch_added_or_removed() {
+	lastPlayedPitch = null
+	reset_trans_steps()
+}
 
-	// uncensus pressed note
-	if (velocity === 0) {
-		pressedPitches.remove(pitch)
-		delete velocities[pitch]
-		Max.outlet([pitch, 0])
+Max.addHandler('note', (...msg) => {
+	const [p, v] = msg
+
+	if (!hold) {
+		if (v !== 0) {
+			if (!pressedPitches.includes(p)) {
+				pressedPitches.push(p)
+				pitch_added_or_removed()
+			}
+			pressedVelocities[p] = v
+			// Max.post(pressedPitches)
+		}
+		else {
+			pressedPitches.remove(p)
+			delete pressedVelocities[p]
+			noteoff(p)
+			pitch_added_or_removed()
+			if (relatedPitches[p]) {
+				for (const rp of relatedPitches[p]) {
+					Max.outlet([rp, 0])
+				}
+			}
+		}
 	}
-	// census pressed note
-	else {
-		if (!pressedPitches.includes(pitch)) pressedPitches.push(pitch)
-		velocities[pitch] = velocity
+	else if (v !== 0) {
+		if (!pressedPitches.includes(p)) {
+			pressedPitches.push(p)
+			pressedVelocities[p] = v
+			// Max.post(pressedPitches)
+			pitch_added_or_removed()
+		}
+		else {
+			pressedPitches.remove(p)
+			delete pressedVelocities[p]
+			noteoff(p)
+			pitch_added_or_removed()
+		}
 	}
 })
 
 Max.addHandler('beat', (msg) => {
-	Max.post('▼')
+	// Max.post('🥢')
 
-	// kill last note
-	if (!susped) Max.outlet([lastPitch, 0])
+	if (!susped) noteoff(lastPlayedPitch)
 
 	if (pressedPitches.length === 0) return
 
-	pitch = pressedPitches.sample()
-	let newPitch = pitch
+	let pressedPitch = getNext(pressedPitches, lastPlayedPitch)
+	computedPitch = pressedPitch
 
-	if (Math.random() * 50 < octdevprob) {
-		const octaves = octs(pitch, pitchmin, pitchmax, octdevrange)
-		newPitch = octaves.sample()
-		velocities[newPitch] = velocities[pitch]
+
+	if (r(1, 100) <= octdevprob) {
+		const octaves = octs(computedPitch, pitchmin, pitchmax, octdevrange, octdirection)
+		computedPitch = octaves.sample()
+		playedVelocities[computedPitch] = pressedPitches[pressedPitch]
+
+		if (!relatedPitches[pressedPitch]) relatedPitches[pressedPitch] = []
+		if (!relatedPitches[pressedPitch].includes(computedPitch)) {
+			relatedPitches[pressedPitch].push(computedPitch)
+		}
 	}
 
-	if (forcedvel !== 0) velocities[newPitch] = forcedvel
+	const vel = forcedvel === -1 ? pressedVelocities[pressedPitch] : forcedvel
+	let computedVelocity = between(parseInt(vel * r(velatt, 100) / 100), 1, 127)
+	playedVelocities[computedPitch] = computedVelocity
 
-	const v = between(parseInt(velocities[newPitch] * r(velatt, 100) / 100), 1, 127)
+	if (r(1, 100) <= skipstepprob) {
+		computedVelocity = 0
+	}
 
-	Max.post([newPitch, v])
-	Max.outlet([newPitch, v])
-	lastPitch = newPitch
+	noteon(computedPitch, computedVelocity)
+	lastPlayedPitch = computedPitch
 })

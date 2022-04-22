@@ -9,10 +9,21 @@ Array.prototype.remove = function (value) {
     }
 }
 
-exports.octs = function octs(pitch, min, max, octdevrange) {
+exports.octs = function octs(pitch, min, max, octdevrange, octdirection) {
     const octaves = []
 
-    for (let i = -octdevrange; i <= octdevrange; i++) {
+    let from = -octdevrange
+    let to = octdevrange
+    switch (octdirection) {
+        case 'high':
+            from = 0
+            break
+        case 'low':
+            to = 0
+            break
+    }
+
+    for (let i = from; i <= to; i++) {
         let o = pitch + i * 12
         if (min <= o && o <= max) {
             octaves.push(o)
