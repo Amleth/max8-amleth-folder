@@ -7,3 +7,4 @@ node_modules
 /Snippets
 /Styles
 /Templates
+.DS_Store

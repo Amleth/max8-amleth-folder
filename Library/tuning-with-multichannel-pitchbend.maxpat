@@ -3,14 +3,14 @@
 		"fileversion" : 1,
 		"appversion" : 		{
 			"major" : 8,
-			"minor" : 1,
-			"revision" : 11,
+			"minor" : 3,
+			"revision" : 1,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 42.0, 85.0, 890.0, 1033.0 ],
+		"rect" : [ 42.0, 87.0, 890.0, 1033.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -151,14 +151,16 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 224.0, 112.999999761581421, 296.0, 22.0 ],
+					"patching_rect" : [ 224.0, 112.999999761581421, 397.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"autostart" : 1,
 						"defer" : 0,
+						"node_bin_path" : "",
+						"npm_bin_path" : "",
 						"watch" : 1
 					}
 ,
-					"text" : "node.script amleth_midi_mt.js @autostart 1 @watch 1"
+					"text" : "node.script tuning-with-multichannel-pitchbend.js @autostart 1 @watch 1"
 				}
 
 			}
@@ -272,7 +274,7 @@
 			}
  ],
 		"dependency_cache" : [ 			{
-				"name" : "amleth_midi_mt.js",
+				"name" : "tuning-with-multichannel-pitchbend.js",
 				"bootpath" : "~/Documents/Max 8/Library",
 				"patcherrelativepath" : ".",
 				"type" : "TEXT",
