@@ -14,4 +14,4 @@ score = {
     }
 }
 
-make_midi(score, "/Users/amleth/SCOR0000.mid", 60)
+make_midi(score, "SCOR0000.mid", 60)
