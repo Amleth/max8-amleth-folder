@@ -34,4 +34,29 @@ def make_midi(score, midi_file, bpm):
             velocity=0,
             time=int(mido.second2tick(score["notes"]["d"][i]/1000, mid.ticks_per_beat, mido.bpm2tempo(bpm)))
         ))
+
     mid.save(midi_file)
+
+    return mido.MidiFile(midi_file)
+
+
+def get_port(myportname):
+    ports = mido.get_output_names()
+    for p in ports:
+        if p.startswith(myportname):
+            return p
+
+
+def open_port(myportname):
+    return mido.open_output(get_port(myportname))
+
+
+def play_midi(mid, outport):
+    outport = open_port(outport)
+    outport.panic()
+
+    for m in mid.play():
+        outport.send(m)
+        if m.type != "note_off":
+            print(m)
+    outport.close()
