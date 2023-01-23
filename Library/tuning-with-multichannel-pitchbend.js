@@ -1,40 +1,55 @@
-Array.prototype.sample = function () {
-	return this[Math.floor(Math.random() * this.length)]
-}
-
 const Max = require('max-api')
 
-let availableChannels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
-const registry = {}
+const BASE_PB = 64
+const MODIFIED_PB = 48
 
-function post(m, channel, pitch, velocity, pitchbend) {
-	Max.post(`${m}C=${channel} P=${pitch} V=${velocity} B=${pitchbend}`)
+////////////////////////////////////////////////////////////////////////////////
+// INIT
+////////////////////////////////////////////////////////////////////////////////
+
+const p2pb = []
+for (let i = 0; i <= 127; i = i + 1) {
+	p2pb[i] = (i % 12 === 4 || i % 12 === 11) ? MODIFIED_PB : BASE_PB
 }
 
-function postIO(m, p, v) {
-	Max.post(`${m} P=${p} V=${v}`)
+const availableChannels = []
+for (let i = 1; i <= 16; i = i + 1) {
+	availableChannels.push(i)
 }
+
+const c2pb = {}
+for (let i = 1; i <= 16; i = i + 1) {
+	c2pb[i] = BASE_PB
+}
+
+const p2c = {}
+for (let i = 0; i <= 127; i = i + 1) {
+	p2c[i] = -1
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// HANDLER
+////////////////////////////////////////////////////////////////////////////////
 
 Max.addHandler("list", (...msg) => {
-	Max.post("-".repeat(80))
+	Max.post(" ")
 	let [p, v] = msg
+	Max.post(`IN p:${p} v:${v}`)
 
 	if (v === 0) {
-		const data = registry[p]
-		availableChannels = [data[0], ...availableChannels]
-		delete registry[p]
-		Max.outlet([p, v, data[0], 0])
+		if (p2c[p] !== -1) availableChannels.push(p2c[p])
+		p2c[p] = -1
+		Max.outlet([p, v])
+		Max.post([p, v])
 	}
-	else if (Object.keys(registry).length < 16) {
-		const c = availableChannels.sample()
-		availableChannels = availableChannels.filter(_ => _ !== c)
-		const pb = (p % 12 === 4 || p % 12 === 11) ? -0.5 * 127 : 0
-		registry[p] = [c, pb]
-		Max.outlet([p, v, registry[p][0], registry[p][1]])
+	else {
+		if (availableChannels.length > 0) {
+			c = availableChannels.shift()
+			p2c[p] = c
+			Max.outlet([p, v, p2pb[p], c])
+			Max.post([p, v, p2pb[p], c])
+		}
 	}
 
-	for (const k in registry) {
-		Max.post(k + " --> " + registry[k].join(" "))
-	}
-	Max.post(availableChannels.length + "/" + 16)
+	Max.post(availableChannels.length, availableChannels)
 })
