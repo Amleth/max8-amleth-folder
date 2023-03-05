@@ -1,18 +1,37 @@
-from distutils.command import check
+from numpy import cumsum
 from numpy.random import randint, choice
-from minuit import make_midi, play_midi
+from pathlib import Path
+from age import ant
+from helpers import extract_lengths
 
-# la question est : est-ce que je préfère une expression des durées en secondes ou en
+s = ant(Path(__file__).stem + ".mid", 60)
 
-N = 1000
-score = {
-    "notes": {
-        "c": [0] * N,
-        "d": [169] * N,
-        "p": [choice([36, 48, 60]) for i in range(0, N)],
-        "v": [randint(0, 31) for i in range(0, N)]
-    }
-}
+N = 100
 
-mid = make_midi(score, "SCOR0000.mid", 60)
-play_midi(mid, "M1")
+o = cumsum([0]+[choice([500, 1000, 2000]) for i in range(N)])
+d = extract_lengths(o)
+o = o[:-1]
+s.add_notes_pattern(0,  {
+    "c": [0]*N,
+    "d": d,
+    "o": o,
+    "p": [choice([24, 36, 48]) for x in range(N)],
+    "t": [0]*N,
+    "v": [randint(11, 55) for x in range(N)]
+})
+
+N = 400
+o = cumsum([0]+[choice([100, 133, 150, 200, 250, 267]) for i in range(N)])
+d = extract_lengths(o)
+o = o[:-1]
+s.add_notes_pattern(0,  {
+    "c": [0]*N,
+    "d": d,
+    "o": o,
+    "p": [choice([72, 84]) for x in range(N)],
+    "t": [0]*N,
+    "v": [randint(0, 22) for x in range(N)]
+})
+
+s.make_midi()
+s.play_midi("M1")

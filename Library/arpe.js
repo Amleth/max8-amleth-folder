@@ -29,7 +29,7 @@ Max.addHandler('octdevrange', msg => { octdevrange = msg })
 let octdirection = 'both'
 Max.addHandler('octdirection', msg => { octdirection = msg })
 
-let style = 'down'
+let style = 'random'
 Max.addHandler('style', msg => { style = msg })
 
 let pitchmin = 0
@@ -41,6 +41,13 @@ Max.addHandler('randomselpitch', msg => { randomselpitch = msg })
 
 let skipstepprob = 0
 Max.addHandler('skipstepprob', msg => { skipstepprob = msg })
+	
+let randomizechannel = false
+Max.addHandler('randomizechannel', msg => { randomizechannel = msg })
+	
+let channelrange = 1
+Max.addHandler('channelrange', msg => { channelrange = msg })
+
 
 // let transp = 0
 // let transprep = 1
